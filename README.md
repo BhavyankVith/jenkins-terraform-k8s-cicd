@@ -30,15 +30,6 @@ Cloud (Optional): AWS (EKS compatible)
 
 
 Directory structure of this project:
-------------------------------------
-├── Jenkinsfile              # Jenkins CI/CD pipeline
-├── Dockerfile               # Application Docker image
-├── app.py                   # Sample Flask application
-├── requirements.txt         # Python dependencies
-├── terraform/               # Infrastructure provisioning
-│   ├── main.tf
-│   ├── variables.tf
-│   └── outputs.tf
-└── k8s/                     # Kubernetes manifests
-    ├── deployment.yaml
-    └── service.yaml
+
+<img width="210" height="306" alt="image" src="https://github.com/user-attachments/assets/473952f8-153e-41bb-bde5-1dcd072a7288" />
+
