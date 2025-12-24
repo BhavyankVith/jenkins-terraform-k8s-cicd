@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "your-dockerhub-username/flask-app:latest"
-        AWS_REGION   = "ap-south-1"
+        DOCKER_IMAGE = "bhavyank99/flask-app:latest"
+        AWS_REGION   = "us-east-1"
     }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo.git'
+                git branch: 'main', url: 'https://github.com/https://github.com/BhavyankVith/jenkins-terraform-k8s-cicd.git'
             }
         }
 
