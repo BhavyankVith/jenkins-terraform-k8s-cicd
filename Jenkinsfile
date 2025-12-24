@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/https://github.com/BhavyankVith/jenkins-terraform-k8s-cicd.git'
+                git branch: 'main', url: 'https://github.com/BhavyankVith/jenkins-terraform-k8s-cicd.git'
             }
         }
 
