@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "bhavyank99/flask-app:latest"
-        AWS_REGION   = "us-east-1"
+        AWS_REGION   = "eu-north-1"
         // It is better to define these here so you don't have to change them in every stage
         DOCKER_REGISTRY_CRED_ID = 'dockerhub-creds'
         AWS_CRED_ID             = 'aws-creds' // You need to create this in Jenkins
@@ -69,7 +69,7 @@ pipeline {
                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                 ]]) {
                     sh '''
-                    aws eks update-kubeconfig --region us-east-1 --name your-cluster-name
+                    aws eks update-kubeconfig --region eu-north-1 --name your-cluster-name
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/service.yaml
                     '''
@@ -93,7 +93,7 @@ pipeline {
 
 //     environment {
 //         DOCKER_IMAGE = "bhavyank99/flask-app:latest"
-//         AWS_REGION   = "us-east-1"
+//         AWS_REGION   = "eu-north-1"
 //     }
 
 //     stages {
