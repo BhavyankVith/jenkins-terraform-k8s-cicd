@@ -79,19 +79,19 @@ stage('Push Docker Image') {
     // New syntax
 stage('Provision Infra with Terraform') {
     steps {
-        // Use the ID you saw in the dropdown (it usually starts with AKIA... or is a UUID)
+        // Use the EXACT ID you found in the Snippet Generator
         withCredentials([aws(
             credentialsId: 'aws-creds', 
             accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-        )]) {
+        )]) { // The curly brace MUST start here
             dir('terraform') {
                 sh '''
                 terraform init
                 terraform apply -auto-approve
                 '''
             }
-        } // The closing brace MUST be after the sh commands
+        } // This brace closes the withCredentials block
     }
 }
         stage('Deploy to Kubernetes') {
