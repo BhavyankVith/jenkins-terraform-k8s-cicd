@@ -15,7 +15,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/BhavyankVith/jenkins-terraform-k8s-cicd.git'
             }
         }
-
+    
         stage('Build Docker Image') {
             steps {
                 // Use env variable for consistency
@@ -23,22 +23,39 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: "${DOCKER_REGISTRY_CRED_ID}",
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    // Using single quotes prevents Groovy from expanding the variables prematurely
-                    sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push $DOCKER_IMAGE
-                    '''
-                }
-            }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         withCredentials([usernamePassword(
+        //             credentialsId: "${DOCKER_REGISTRY_CRED_ID}",
+        //             usernameVariable: 'DOCKER_USER',
+        //             passwordVariable: 'DOCKER_PASS'
+        //         )])
+        //          {
+        //             // Using single quotes prevents Groovy from expanding the variables prematurely
+        //             sh '''
+        //             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+        //             docker push $DOCKER_IMAGE
+        //             '''
+        //         }
+        //     }
+        // }
+        //Try another approach
+stage('Push Docker Image') {
+    steps {
+        // Use usernamePassword to get two separate variables
+        withCredentials([usernamePassword(
+            credentialsId: 'dd5363fb-0a87-45e1-8c1c-7ea77575b4e0', 
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+            // The shell script MUST be inside these curly braces
+            sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push $DOCKER_IMAGE
+            '''
         }
-
+    }
+}
         stage('Provision Infra with Terraform') {
             steps {
                 // Wrap in AWS credentials so Terraform can talk to AWS
@@ -152,4 +169,3 @@ pipeline {
 //         }
 //     }
 // }
-
