@@ -56,25 +56,44 @@ stage('Push Docker Image') {
         }
     }
 }
-        stage('Provision Infra with Terraform') {
-            steps {
-                // Wrap in AWS credentials so Terraform can talk to AWS
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    credentialsId: "${AWS_CRED_ID}", 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    dir('terraform') {
-                        sh '''
-                        terraform init
-                        terraform apply -auto-approve
-                        '''
-                    }
-                }
+        // stage('Provision Infra with Terraform') {
+        //     steps {
+        //         // Wrap in AWS credentials so Terraform can talk to AWS
+        //         withCredentials([[
+        //             $class: 'AmazonWebServicesCredentialsBinding', 
+        //             credentialsId: "${AWS_CRED_ID}", 
+        //             accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+        //             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        //         ]])
+                
+        //          {
+        //             dir('terraform') {
+        //                 sh '''
+        //                 terraform init
+        //                 terraform apply -auto-approve
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
+    // New syntax
+stage('Provision Infra with Terraform') {
+    steps {
+        // Use the ID you saw in the dropdown (it usually starts with AKIA... or is a UUID)
+        withCredentials([aws(
+            credentialsId: 'AKIAVOGEKRR4SLQLA2ES', 
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        )]) {
+            dir('terraform') {
+                sh '''
+                terraform init
+                terraform apply -auto-approve
+                '''
             }
-        }
-
+        } // The closing brace MUST be after the sh commands
+    }
+}
         stage('Deploy to Kubernetes') {
             steps {
                 // You must ensure your environment has the right kubeconfig
