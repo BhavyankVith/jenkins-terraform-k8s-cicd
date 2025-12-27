@@ -79,19 +79,21 @@ stage('Push Docker Image') {
     // New syntax
 stage('Provision Infra with Terraform') {
     steps {
-        // Use the EXACT ID you found in the Snippet Generator
         withCredentials([aws(
             credentialsId: 'aws-creds', 
             accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-        )]) { // The curly brace MUST start here
+        )]) {
             dir('terraform') {
                 sh '''
-                terraform init
-                terraform apply -auto-approve
+                export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
+                
+                terraform init -input=false
+                
+                terraform apply -input=false -auto-approve
                 '''
             }
-        } // This brace closes the withCredentials block
+        }
     }
 }
         stage('Deploy to Kubernetes') {
