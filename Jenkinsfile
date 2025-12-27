@@ -81,7 +81,7 @@ stage('Provision Infra with Terraform') {
     steps {
         // Use the ID you saw in the dropdown (it usually starts with AKIA... or is a UUID)
         withCredentials([aws(
-            credentialsId: 'AKIAVOGEKRR4SLQLA2ES', 
+            credentialsId: 'aws-creds', 
             accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         )]) {
