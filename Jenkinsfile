@@ -85,12 +85,11 @@ stage('Provision Infra with Terraform') {
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         )]) {
             dir('terraform') {
-                sh '''
+            sh '''
                 export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
-                
                 terraform init -input=false
-                
-                terraform apply -input=false -auto-approve
+                # Pass necessary variables here (e.g., region)
+                terraform apply -var="region=${AWS_REGION}" -input=false -auto-approve
                 '''
             }
         }
