@@ -1,9 +1,25 @@
+# provider "aws" {
+#   region = "eu-north-1"
+# }
+
+# resource "aws_eks_cluster" "eks" {
+#   name     = "demo-eks"
+#   role_arn = aws_iam_role.eks_role.arn
+
+#   vpc_config {
+#     subnet_ids = var.subnet_ids
+#   }
+# }
+
+// New approach
+
 provider "aws" {
-  region = "eu-north-1"
+  region = var.region
 }
 
 resource "aws_eks_cluster" "eks" {
-  name     = "demo-eks"
+  # Use the variable defined in variables.tf instead of a hardcoded string
+  name     = var.cluster_name 
   role_arn = aws_iam_role.eks_role.arn
 
   vpc_config {
