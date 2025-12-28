@@ -114,6 +114,7 @@ stage('Deploy to Kubernetes') {
             # 2. Apply your Kubernetes manifests
             kubectl apply -f k8s/deployment.yaml
             kubectl apply -f k8s/service.yaml
+            kubectl get svc flask-service
             '''
         }
     }
