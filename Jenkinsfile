@@ -86,14 +86,11 @@ stage('Provision Infra with Terraform') {
         )]) {
             dir('terraform') {
             sh '''
-            export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
-            terraform init -input=false
-            terraform apply \
-            -var="region=eu-north-1" \
-            -var="cluster_name=my-eks-cluster" \
-            -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
-            -input=false -auto-approve
-            '''
+                export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
+                terraform init -input=false
+                # Pass necessary variables here (e.g., region)
+                terraform apply -var="region=${AWS_REGION}" -input=false -auto-approve
+                '''
             }
         }
     }
