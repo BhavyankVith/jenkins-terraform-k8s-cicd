@@ -85,12 +85,15 @@ stage('Provision Infra with Terraform') {
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         )]) {
             dir('terraform') {
-sh '''
-    export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
-    terraform init -input=false
-    # Add ALL missing variables here
-    terraform apply -var="region=${AWS_REGION}" -var="cluster_name=my-eks-cluster" -input=false -auto-approve
-    '''
+            sh '''
+            export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
+            terraform init -input=false
+            terraform apply \
+            -var="region=eu-north-1" \
+            -var="cluster_name=my-eks-cluster" \
+            -var='subnet_ids=["subnet-0123456789abcdef0", "subnet-0987654321fedcba0"]' \
+            -input=false -auto-approve
+            '''
             }
         }
     }
