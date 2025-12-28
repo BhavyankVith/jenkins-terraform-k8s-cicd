@@ -98,24 +98,26 @@ stage('Provision Infra with Terraform') {
         }
     }
 }
-        stage('Deploy to Kubernetes') {
-            steps {
-                // You must ensure your environment has the right kubeconfig
-                // If using EKS, you can refresh it here:
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    credentialsId: "${AWS_CRED_ID}", 
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
-                    sh '''
-                    aws eks update-kubeconfig --region eu-north-1 --name demo-eks
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-                    '''
-                }
-            }
+stage('Deploy to Kubernetes') {
+    steps {
+        // Ensure credentialsId matches your stored Jenkins credential ID
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding', 
+            credentialsId: 'aws-creds', // Using the ID that worked in the previous stage
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+            sh '''
+            # 1. Update name from 'demo-eks' to 'my-eks-cluster'
+            aws eks update-kubeconfig --region eu-north-1 --name my-eks-cluster
+            
+            # 2. Apply your Kubernetes manifests
+            kubectl apply -f k8s/deployment.yaml
+            kubectl apply -f k8s/service.yaml
+            '''
         }
+    }
+}
     }
 
     post {
