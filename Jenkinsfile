@@ -91,7 +91,7 @@ stage('Provision Infra with Terraform') {
             terraform apply \
             -var="region=eu-north-1" \
             -var="cluster_name=my-eks-cluster" \
-            -var='subnet_ids=["subnet-0123456789abcdef0", "subnet-0987654321fedcba0"]' \
+            -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
             -input=false -auto-approve
             '''
             }
