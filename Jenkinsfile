@@ -136,26 +136,26 @@ stage('Deploy to Kubernetes') {
     }
 }
 // To destroy resources
-stage('Terraform Destroy') {
-    steps {
-        // This stops the pipeline and waits for you to click "Proceed" in Jenkins
-        input message: 'Do you want to destroy the infrastructure?', ok: 'Destroy'
+// stage('Terraform Destroy') {
+//     steps {
+//         // This stops the pipeline and waits for you to click "Proceed" in Jenkins
+//         input message: 'Do you want to destroy the infrastructure?', ok: 'Destroy'
         
-        dir('terraform') {
-            sh '''
-                export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
-                terraform init -input=false
+//         dir('terraform') {
+//             sh '''
+//                 export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
+//                 terraform init -input=false
                 
-                # We must pass the same variables used during 'apply' to identify the resources
-                terraform destroy \
-                  -var="region=${AWS_REGION}" \
-                  -var="cluster_name=my-eks-cluster" \
-                  -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
-                  -input=false -auto-approve
-            '''
-        }
-    }
-}
+//                 # We must pass the same variables used during 'apply' to identify the resources
+//                 terraform destroy \
+//                   -var="region=${AWS_REGION}" \
+//                   -var="cluster_name=my-eks-cluster" \
+//                   -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
+//                   -input=false -auto-approve
+//             '''
+//         }
+//     }
+// }
     }
 
     post {
