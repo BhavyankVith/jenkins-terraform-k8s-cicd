@@ -86,17 +86,26 @@ stage('Provision Infra with Terraform') {
         )]) {
     dir('terraform') {
         retry(3) { // Jenkins will try again up to 3 times if there is a network error
-        sh '''
+    sh '''
         export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
         terraform init -input=false
         
-        # Pass necessary variables: region, cluster_name, and subnet_ids
+        # --- NEW IMPORT STEP ---
+        # This tells Terraform: "Hey, I know 'flask-app-nodes' already exists. Add it to your state file."
+        # The '|| true' ensures that if it's ALREADY imported, the pipeline doesn't fail.
+        terraform import \
+          -var="region=${AWS_REGION}" \
+          -var="cluster_name=my-eks-cluster" \
+          -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
+          aws_eks_node_group.nodes my-eks-cluster:flask-app-nodes || true
+
+        # --- EXISTING APPLY STEP ---
         terraform apply \
           -var="region=${AWS_REGION}" \
           -var="cluster_name=my-eks-cluster" \
           -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
           -input=false -auto-approve
-    '''
+        '''
                 }
             }
         }
