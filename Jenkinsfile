@@ -84,7 +84,8 @@ stage('Provision Infra with Terraform') {
             accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         )]) {
-            dir('terraform') {
+    dir('terraform') {
+        retry(3) { // Jenkins will try again up to 3 times if there is a network error
         sh '''
         export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
         terraform init -input=false
@@ -96,6 +97,7 @@ stage('Provision Infra with Terraform') {
           -var='subnet_ids=["subnet-0167de52b93fdb411", "subnet-06606047d9e755830"]' \
           -input=false -auto-approve
     '''
+                }
             }
         }
     }
