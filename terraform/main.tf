@@ -98,6 +98,10 @@ resource "aws_eks_cluster" "eks" {
 
   vpc_config {
     subnet_ids = var.subnet_ids
+
+    # Enable both for easier troubleshooting
+    endpoint_public_access  = true  # Allows you to use kubectl from your laptop
+    endpoint_private_access = true # Allows worker nodes to talk to the API inside the VPC
   }
 
   depends_on = [
