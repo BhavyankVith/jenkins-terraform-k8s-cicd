@@ -154,7 +154,7 @@ resource "aws_eks_node_group" "nodes" {
     min_size     = 1
   }
 
-  instance_types = ["t3.medium"] # Standard size for testing
+  instance_types = ["t3.micro"] # Standard size for testing
 
   # Ensure permissions are created before nodes try to join the cluster
   depends_on = [
